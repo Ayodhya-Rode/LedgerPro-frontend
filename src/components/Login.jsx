@@ -14,11 +14,11 @@ export const Login = () => {
 
   async function onSubmit(data) {
     try {
-      const response = await axios.post("http://localhost:8000/api/admin/login", data)
+      const response = await axios.post("http://localhost:8000/api/admin/login", data,{ withCredentials: true })
       toast.success("You Login successfully");
     } catch (error) {
       const message =
-      error.response?.data?.message || "Login failed";
+        error.response?.data?.message || "Login failed";
 
       console.log("error to login", error);
       toast.error(message);
