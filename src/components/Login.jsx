@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import toast from 'react-hot-toast';
-
+import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
 
@@ -12,10 +12,13 @@ export const Login = () => {
     formState: { errors },
   } = useForm();
 
+  const navigate = useNavigate()
+
   async function onSubmit(data) {
     try {
-      const response = await axios.post("http://localhost:8000/api/admin/login", data,{ withCredentials: true })
-      toast.success("You Login successfully");
+      const response = await axios.post("http://localhost:8000/api/admin/login", data, { withCredentials: true })
+      toast.success("You Logged in successfully");
+      navigate("/dashboard")
     } catch (error) {
       const message =
         error.response?.data?.message || "Login failed";
@@ -23,9 +26,7 @@ export const Login = () => {
       console.log("error to login", error);
       toast.error(message);
     }
-
   }
-
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
