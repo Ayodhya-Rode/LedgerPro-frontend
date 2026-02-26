@@ -1,6 +1,9 @@
-import React from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import axios from "axios"
+import { useNavigate } from "react-router-dom";
+import toast from 'react-hot-toast';
+
 
 export const Register = () => {
   const {
@@ -9,7 +12,20 @@ export const Register = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => console.log("Form Submitted:", data);
+  const navigate = useNavigate()
+  async function onSubmit(data) {
+    try {
+      const response = await axios.post("http://localhost:8000/api/admin/register", data)
+      toast.success("You registered successfully");
+      navigate("/login")
+    } catch (error) {
+      const message =
+        error.response?.data?.message || "Registration failed";
+
+      toast.error(message);
+    }
+
+  }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -70,7 +86,6 @@ export const Register = () => {
         >
           Register
         </button>
-
         <Link to="/login">
           <p className="text-center text-sm text-blue-500 hover:underline">Already have an account? Login</p>
         </Link>
